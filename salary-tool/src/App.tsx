@@ -1,7 +1,8 @@
-
 import { useMonthlyIncomeCalculator } from "./hooks/UseMonthlyIncomeCalculator";
-import { Container, Header, Segment } from "semantic-ui-react";
 import Income from "./components/Income";
+import { Button, Col, Container, Row, Stack } from "react-bootstrap";
+import { formatAmount } from "./utils/formatter";
+import Expenses from "./components/Expenses";
 
 function App() {
   const {
@@ -19,45 +20,34 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <Segment.Group>
-          <Segment>
-            <Header as="h3" textAlign="center" content="Intäkt" />
+        <Row>
+          <h1>Alphadev löneverktyg</h1>
+        </Row>
+        <Row>
+          <Col>
+            <h2>Intäkter</h2>
             <Income
               billingRate={billingRate}
               hourlyRate={hourlyRate}
               workHoursInMonth={workHoursInMonth}
+              monthlyIncome={monthlyIncome}
               changeBillingRate={changeBillingRate}
               changeHourlyRate={changeHourlyRate}
               changeWorkHours={changeWorkHours}
             />
-          </Segment>
-          <Segment>
-            <h4>Fakturerad summa: {formatAmount(monthlyIncome)} kr</h4>
-            <h4>
-              Egen intäkt att fördela: {formatAmount(incomeToDistribute)} kr
-            </h4>
-          </Segment>
-        </Segment.Group>
-        <Segment.Group>
-          <Segment>
-            <Header as="h3" textAlign="center" content="Sparande till kst" />
-          </Segment>
-        </Segment.Group>
-        <Segment.Group>
-          <Segment>
-            <Header as="h3" textAlign="center" content="Kostnader på kst" />
-            <h4>
-              Tjänstepension
-            </h4>
-            <h4>
-              Semesterbuffert
-            </h4>
-            <h4>
-              Övriga utgifter
-            </h4>
-            <Header as="h3" textAlign="right" content={`Möjlig bruttolön: ${formatAmount(deductSocialFees(incomeToDistribute))} kr`} />
-          </Segment>
-        </Segment.Group>
+          </Col>
+          <Col>
+            <h2>Utgifter</h2>
+            <Expenses monthlyIncome={monthlyIncome}></Expenses>
+          </Col>
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col></Col>
+        </Row>
+      </Container>
+      <Container>
+        <Stack gap={3}></Stack>
       </Container>
     </div>
   );
@@ -65,14 +55,4 @@ function App() {
 
 export default App;
 
-const formatAmount = (amount: number): string => {
-  return new Intl.NumberFormat("en-US", { useGrouping: true })
-    .format(amount)
-    .replace(/,/g, " ");
-};
 
-
-function deductSocialFees(amount: number): number {
-  const deductionRate = 0.3142;
-  return amount * (1 - deductionRate);
-}
