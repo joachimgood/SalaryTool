@@ -11,9 +11,9 @@ const Expenses: React.FC<ExpensesProps> = ({ monthlyIncome }) => {
     amountToDistribute,
     potentialSalary,
     pension,
-    fiveExtraVacay,
+    vacationDays,
     setPension,
-    changeVacay,
+    changeVacationdays,
   } = useCostCalculator(monthlyIncome);
 
   return (
@@ -36,8 +36,8 @@ const Expenses: React.FC<ExpensesProps> = ({ monthlyIncome }) => {
             <div className="col">
               <Form.Check
                 type="radio"
-                checked={!fiveExtraVacay}
-                onChange={() => changeVacay(false)}
+                checked={vacationDays === 25}
+                onChange={() => changeVacationdays(25)}
                 label="25 dagar"
                 name="vacation"
               />
@@ -45,17 +45,16 @@ const Expenses: React.FC<ExpensesProps> = ({ monthlyIncome }) => {
             <div className="col">
               <Form.Check
                 type="radio"
-                onChange={() => changeVacay(true)}
-                checked={fiveExtraVacay}
+                checked={vacationDays === 30}
+                onChange={() => changeVacationdays(30)}
                 label="30 dagar"
                 name="vacation"
               />
             </div>
           </div>
         </Form.Group>
-       
       </Form>
-<br></br>
+      <br></br>
       <h3>Möjlig bruttolön: {formatAmount(potentialSalary)} kr/månad</h3>
     </div>
   );

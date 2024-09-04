@@ -6,11 +6,11 @@ export const useCostCalculator = (income: number) => {
   const [potentialSalary, setPotentialSalary] = useState(
     deductSocialFees(amountToDistribute)
   );
-  const [fiveExtraVacay, setFiveExtraVacay] = useState(false);
+  const [vacationDays, setVacationDays] = useState(25);
   const [pension, setPension] = useState(0);
 
-  const changeVacationdays = (extraDays: boolean) => {
-    setFiveExtraVacay(extraDays);
+  const changeVacationdays = (days: number) => {
+    setVacationDays(days);
   };
 
   useEffect(() => {
@@ -20,40 +20,40 @@ export const useCostCalculator = (income: number) => {
 
   useEffect(() => {
     setPotentialSalary(
-      recalculatePotentialSalary(amountToDistribute, fiveExtraVacay, pension)
+      recalculatePotentialSalary(amountToDistribute, vacationDays, pension)
     );
-  }, [amountToDistribute, pension, fiveExtraVacay]);
+  }, [amountToDistribute, pension, vacationDays]);
 
   return {
     potentialSalary,
     amountToDistribute,
     pension,
-    fiveExtraVacay,
-    changeVacay: changeVacationdays,
+    vacationDays,
+    changeVacationdays,
     setPension,
   };
 };
 
 const recalculatePotentialSalary = (
   totalCompensation: number,
-  additionalVacation: boolean,
+  vacationDays: number,
   pensionContribution: number
 ): number => {
-    //Pension
+  //Pension
   const grossPensionCost = pensionContribution * 1.2426;
   const remainingCompensation = totalCompensation - grossPensionCost;
 
-
   //Vacation
+  const potentialSalaryBeforeVacation = deductSocialFees(remainingCompensation); //Should make some deduction here. This will save too much vacay.
   const monthlyVacationSaving = calculateVacationSavingsPerMonth(
-    deductSocialFees(remainingCompensation),
-    additionalVacation ? 30 : 25
+    potentialSalaryBeforeVacation,
+    vacationDays
   );
 
   const netCompensationAfterVacationSavings =
     remainingCompensation - monthlyVacationSaving;
 
-    //SocialFees on last remaining
+  //SocialFees on last remaining
   return deductSocialFees(netCompensationAfterVacationSavings);
 };
 
