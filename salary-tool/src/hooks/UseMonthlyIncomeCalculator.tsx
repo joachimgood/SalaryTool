@@ -3,7 +3,7 @@ import { useState } from "react";
 export const useMonthlyIncomeCalculator = () => {
   const [billingRate, setBillingRate] = useState(1);
   const [hourlyRate, setHourlyRate] = useState(1000);
-  const [workHoursInMonth, setWorkHoursInMonth] = useState(160);
+  const [workHoursInMonth, setWorkHoursInMonth] = useState(167);
 
   const [monthlyIncome, setMonthlyIncome] = useState(
     calculateIncome(hourlyRate, workHoursInMonth, billingRate)

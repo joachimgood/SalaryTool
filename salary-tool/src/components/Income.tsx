@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Card, Form } from "react-bootstrap";
 import { formatAmount } from "../utils/formatter";
 interface IncomeProps {
   hourlyRate: number;
@@ -23,42 +23,51 @@ const Income: React.FC<IncomeProps> = ({
   return (
     <div>
       <Form>
-        <Form.Group>
-          <Form.Label>Timtaxa: {hourlyRate.toString() + " kr"}</Form.Label>
-          <Form.Range
-            min={500}
-            max={2000}
-            step={10}
-            value={hourlyRate}
-            onChange={(e) => changeHourlyRate(Number(e.target.value))}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>
-            Debiteringsgrad: {billingRateDisplay.toString() + "%"}
-          </Form.Label>
-          <Form.Range
-            min={0}
-            step={5}
-            max={100}
-            value={billingRateDisplay}
-            onChange={(e) => changeBillingRate(Number(e.target.value))}
-          />
-        </Form.Group>
-        {/* <Form.Group>
-            <Form.Label>
-              Arbetade timmar i månaden: {workHoursInMonth.toString() + "h"}
-            </Form.Label>
-            <Form.Control
-              type="number"
-              min={0}
-              value={workHoursInMonth}
-              onChange={(e) => changeWorkHours(Number(e.target.value))}
-            />
-          </Form.Group> */}
+        <Card>
+          <Card.Header as="h5">
+            Timtaxa: {formatAmount(hourlyRate).toString() + " kr"}
+          </Card.Header>
+          <Card.Body>
+            <Form.Group>
+              <Form.Range
+                min={500}
+                max={2000}
+                step={10}
+                value={hourlyRate}
+                onChange={(e) => changeHourlyRate(Number(e.target.value))}
+              />
+            </Form.Group>
+          </Card.Body>
+        </Card>
         <br />
-        <h4>Fakturerad summa: {formatAmount(monthlyIncome)} kr</h4> <i>Baserat på månad med 160 arbetstimmar</i>
+        <Card>
+          <Card.Header as="h5">
+            Debiteringsgrad: {billingRateDisplay.toString() + "%"}
+          </Card.Header>
+          <Card.Body>
+            <Form.Group>
+              <Form.Range
+                min={0}
+                step={5}
+                max={100}
+                value={billingRateDisplay}
+                onChange={(e) => changeBillingRate(Number(e.target.value))}
+              />
+            </Form.Group>
+          </Card.Body>
+        </Card>
       </Form>
+      <br />
+      <Card>
+        <Card.Header as="h5">
+          Summa
+        </Card.Header>
+        <Card.Body>
+          <p><b>Fakturerat: </b>{formatAmount(monthlyIncome)} kr</p>
+          <p><b>Egen intäkt att fördela: </b>{formatAmount(monthlyIncome * 0.8)} kr</p>
+          <i>Baserat på månad med 167 arbetstimmar</i>
+        </Card.Body>
+      </Card>
     </div>
   );
 };
