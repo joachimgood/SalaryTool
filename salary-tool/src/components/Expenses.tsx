@@ -181,7 +181,7 @@ const Expenses: React.FC<ExpensesProps> = ({
               </InputGroup>
             ))}
             <div className="d-grid gap-2">
-              <Button onClick={() => addExpense()} variant="secondary">
+              <Button onClick={() => addExpense()} variant="primary">
                 Lägg till utgift
               </Button>
             </div>

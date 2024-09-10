@@ -21,9 +21,18 @@ function App() {
   return (
     <div className="App">
       <Container>
+        <br/>
         <Row>
           <h1>Alphadev löneverktyg</h1>
+          <ul>
+            <b>Todo:</b>
+            <li>Fixa local storage</li>
+            <li>branding</li>
+            <li>Sjuk/frånvarodagar?</li>
+            <li>bugg testa</li>
+          </ul>
         </Row>
+        <hr/>
         <Row>
           <Col>
             <h2>Utgifter</h2>
