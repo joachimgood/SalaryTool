@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { deductSocialFees } from "../utils/taxDeducter";
 
+interface additionalExpense {
+  id: string;
+  name: string;
+  cost: number;
+}
+
 export const useCostCalculator = (income: number) => {
   const [amountToDistribute, setAmountToDistribute] = useState(income * 0.8);
   const [potentialSalary, setPotentialSalary] = useState(
@@ -8,10 +14,9 @@ export const useCostCalculator = (income: number) => {
   );
   const [vacationDays, setVacationDays] = useState(25);
   const [pension, setPension] = useState(0);
-
-  const changeVacationdays = (days: number) => {
-    setVacationDays(days);
-  };
+  const [additionalExpenses, setAdditionalExpenses] = useState<
+    additionalExpense[]
+  >([]);
 
   useEffect(() => {
     const calculatedAmount = income * 0.8;
@@ -20,49 +25,63 @@ export const useCostCalculator = (income: number) => {
 
   useEffect(() => {
     setPotentialSalary(
-      recalculatePotentialSalary(amountToDistribute, vacationDays, pension)
+      calculatePotentialSalary(
+        amountToDistribute,
+        vacationDays,
+        pension,
+        additionalExpenses
+      )
     );
-  }, [amountToDistribute, pension, vacationDays]);
+  }, [amountToDistribute, pension, vacationDays, additionalExpenses]);
 
   return {
     potentialSalary,
     amountToDistribute,
     pension,
     vacationDays,
-    changeVacationdays,
+    additionalExpenses,
+    setAdditionalExpenses,
+    setVacationDays,
     setPension,
   };
 };
 
-const recalculatePotentialSalary = (
+const calculatePotentialSalary = (
   totalCompensation: number,
   vacationDays: number,
-  pensionContribution: number
+  pensionContribution: number,
+  additionalExpenses: additionalExpense[]
 ): number => {
+  let remainingCompensation = totalCompensation;
+  
+  additionalExpenses.forEach((exp) => {
+    remainingCompensation = remainingCompensation - exp.cost;
+  });
+  
   //Pension
-  const grossPensionCost = pensionContribution * 1.2426;
-  const remainingCompensation = totalCompensation - grossPensionCost;
+  remainingCompensation = remainingCompensation - (pensionContribution * 1.2426);
 
   //Vacation
-  const potentialSalaryBeforeVacation = deductSocialFees(remainingCompensation); //Should make some deduction here. This will save too much vacay.
-  const monthlyVacationSaving = calculateVacationSavingsPerMonth(
-    potentialSalaryBeforeVacation,
+  const monthlyVacationSaving = calculateMonthlVacaySaving(
+    remainingCompensation,
     vacationDays
   );
 
-  const netCompensationAfterVacationSavings =
+  const ncompensationAfterVacationSavings =
     remainingCompensation - monthlyVacationSaving;
 
   //SocialFees on last remaining
-  return deductSocialFees(netCompensationAfterVacationSavings);
+  return deductSocialFees(ncompensationAfterVacationSavings);
 };
 
-const calculateVacationSavingsPerMonth = (
-  monthlySalary: number,
+const calculateMonthlVacaySaving = (
+  remainingCompensation: number,
   amountOfDays: number
 ): number => {
-  const extraMoneyPerVacayDay = monthlySalary * 0.0043;
-  const salaryPerDay = monthlySalary / 21;
+  const potentialMonthlySalary = deductSocialFees(remainingCompensation);
+
+  const extraMoneyPerVacayDay = potentialMonthlySalary * 0.0043;
+  const salaryPerDay = potentialMonthlySalary / 21;
   const dailyVacationPay = salaryPerDay + extraMoneyPerVacayDay;
 
   const totalVacationAllowance = dailyVacationPay * amountOfDays * 1.3142;
