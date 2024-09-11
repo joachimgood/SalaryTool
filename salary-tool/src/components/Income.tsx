@@ -4,11 +4,9 @@ import { formatAmount } from "../utils/formatter";
 interface IncomeProps {
   hourlyRate: number;
   billingRate: number;
-  workHoursInMonth: number;
   monthlyIncome: number;
   changeHourlyRate: (rate: number) => void;
   changeBillingRate: (rate: number) => void;
-  changeWorkHours: (hours: number) => void;
 }
 
 const Income: React.FC<IncomeProps> = ({

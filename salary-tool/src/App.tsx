@@ -9,11 +9,9 @@ function App() {
   const {
     hourlyRate,
     billingRate,
-    workHoursInMonth,
     monthlyIncome,
     changeHourlyRate,
     changeBillingRate,
-    changeWorkHours,
   } = useMonthlyIncomeCalculator();
 
   const [potentialSalary, setPotentialSalary] = useState(0);
@@ -46,11 +44,9 @@ function App() {
             <Income
               billingRate={billingRate}
               hourlyRate={hourlyRate}
-              workHoursInMonth={workHoursInMonth}
               monthlyIncome={monthlyIncome}
               changeBillingRate={changeBillingRate}
               changeHourlyRate={changeHourlyRate}
-              changeWorkHours={changeWorkHours}
             />
             <br />
             <Card>

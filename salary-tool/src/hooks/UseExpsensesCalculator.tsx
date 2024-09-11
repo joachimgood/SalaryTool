@@ -59,8 +59,10 @@ const calculatePotentialSalary = (
 ): number => {
   let remainingCompensation = totalCompensation;
 
+  //Savings
   remainingCompensation = remainingCompensation - savings;
 
+  //Expenses
   additionalExpenses.forEach((exp) => {
     remainingCompensation = remainingCompensation - exp.cost;
   });
