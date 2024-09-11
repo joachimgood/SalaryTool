@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { deductSocialFees } from "../utils/taxDeducter";
+import {
+  ALPHADEV_SHARE,
+  EXP_STORAGE_KEY,
+  PENSION_SOCIAL_FEE,
+  SOCIAL_FEE_PERCENTAGE,
+} from "../constants/constants";
 
 interface additionalExpense {
   id: string;
@@ -8,20 +13,35 @@ interface additionalExpense {
 }
 
 export const useExpensesCalculator = (income: number) => {
-  const [amountToDistribute, setAmountToDistribute] = useState(income * 0.8);
-  const [potentialSalary, setPotentialSalary] = useState(
-    deductSocialFees(amountToDistribute)
+  const [amountToDistribute, setAmountToDistribute] = useState(
+    income * ALPHADEV_SHARE
   );
-  const [vacationDays, setVacationDays] = useState(25);
-  const [pension, setPension] = useState(0);
-  const [savings, setSavings] = useState(0);
+  const [potentialSalary, setPotentialSalary] = useState(
+    amountToDistribute * (1 - SOCIAL_FEE_PERCENTAGE)
+  );
+  const [vacationDays, setVacationDays] = useState(() => {
+    const storedData = localStorage.getItem(EXP_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).vacationDays : 25;
+  });
+
+  const [pension, setPension] = useState(() => {
+    const storedData = localStorage.getItem(EXP_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).pension : 0;
+  });
+  const [savings, setSavings] = useState(() => {
+    const storedData = localStorage.getItem(EXP_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).savings : 0;
+  });
+
   const [additionalExpenses, setAdditionalExpenses] = useState<
     additionalExpense[]
-  >([]);
+  >(() => {
+    const storedData = localStorage.getItem(EXP_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).additionalExpenses : [];
+  });
 
   useEffect(() => {
-    const calculatedAmount = income * 0.8;
-    setAmountToDistribute(calculatedAmount);
+    setAmountToDistribute(income * ALPHADEV_SHARE);
   }, [income]);
 
   useEffect(() => {
@@ -34,11 +54,19 @@ export const useExpensesCalculator = (income: number) => {
         savings
       )
     );
+    localStorage.setItem(
+      "expenses",
+      JSON.stringify({
+        pension,
+        vacationDays,
+        additionalExpenses,
+        savings,
+      })
+    );
   }, [amountToDistribute, pension, vacationDays, additionalExpenses, savings]);
 
   return {
     potentialSalary,
-    amountToDistribute,
     pension,
     vacationDays,
     additionalExpenses,
@@ -68,7 +96,8 @@ const calculatePotentialSalary = (
   });
 
   //Pension
-  remainingCompensation = remainingCompensation - pensionContribution * 1.2426;
+  remainingCompensation =
+    remainingCompensation - pensionContribution * PENSION_SOCIAL_FEE;
 
   //Vacation
   const monthlyVacationSaving = calculateMonthlVacaySaving(
@@ -80,14 +109,13 @@ const calculatePotentialSalary = (
     remainingCompensation - monthlyVacationSaving;
 
   //SocialFees on last remaining
-  return deductSocialFees(compensationAfterVacationSavings);
+  return compensationAfterVacationSavings * (1 - SOCIAL_FEE_PERCENTAGE);
 };
 
 const calculateMonthlVacaySaving = (
   avalableCompensationInMonth: number,
   amountOfDays: number
 ): number => {
-
   const dailyVacationPay = avalableCompensationInMonth / 21; //avg. of 21 work days in a month.
   const vacationAllowanceNeeded = dailyVacationPay * amountOfDays;
 

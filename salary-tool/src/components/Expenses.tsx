@@ -13,7 +13,6 @@ const Expenses: React.FC<ExpensesProps> = ({
   onPotentialSalaryChange,
 }) => {
   const {
-    amountToDistribute,
     potentialSalary,
     pension,
     vacationDays,
@@ -66,7 +65,7 @@ const Expenses: React.FC<ExpensesProps> = ({
           <Card.Body>
             <Form.Group>
               <Form.Label>
-                Sparande: {formatAmount(pension).toString() + " kr"}
+                {`Sparande: ${formatAmount(pension)} kr`}
               </Form.Label>
               <Form.Range
                 min={0}
@@ -112,8 +111,7 @@ const Expenses: React.FC<ExpensesProps> = ({
           <Card.Body>
             <Form.Group>
               <Form.Label>
-                Sparande till kostnadsställe:{" "}
-                {formatAmount(savings).toString() + " kr"}
+                {`Sparande till kostnadställe: ${formatAmount(savings)} kr`}
               </Form.Label>
               <Form.Range
                 min={0}
@@ -122,10 +120,7 @@ const Expenses: React.FC<ExpensesProps> = ({
                 value={savings}
                 onChange={(e) => setSavings(Number(e.target.value))}
               />
-              <Form.Label>
-                Kostnadsställets nivå efter 6 mån:{" "}
-                {formatAmount(savings * 6).toString() + " kr"}
-              </Form.Label>
+              <Form.Label>Kostnadsställets saldo efter:</Form.Label>
             </Form.Group>
             <Stack>
               <b>
@@ -151,7 +146,7 @@ const Expenses: React.FC<ExpensesProps> = ({
               <InputGroup key={index} className="mb-3">
                 <InputGroup.Text>Namn:</InputGroup.Text>
                 <Form.Control
-                  placeholder={index == 0 ? "t.ex. telefonabonnemang" : ""}
+                  placeholder={index === 0 ? "t.ex. telefonabonnemang" : ""}
                   value={expense.name}
                   onChange={(e) =>
                     editExpense(expense.id, e.target.value, expense.cost)

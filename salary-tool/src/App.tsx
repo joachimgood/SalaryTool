@@ -1,5 +1,5 @@
 import Income from "./components/Income";
-import { Card, Col, Container, Row, Stack } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import { formatAmount } from "./utils/formatter";
 import Expenses from "./components/Expenses";
 import { useState } from "react";

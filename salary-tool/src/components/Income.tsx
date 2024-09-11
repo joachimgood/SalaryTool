@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Card, Form } from "react-bootstrap";
 import { formatAmount } from "../utils/formatter";
 import { useMonthlyIncomeCalculator } from "../hooks/UseMonthlyIncomeCalculator";
+import { ALPHADEV_SHARE, WORK_HRS_IN_MONTH } from "../constants/constants";
 interface IncomeProps {
   onMonthlyIncomeChange: (income: number) => void;
 }
@@ -26,7 +27,7 @@ const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
       <Form>
         <Card>
           <Card.Header as="h5">
-            Timtaxa: {formatAmount(hourlyRate).toString() + " kr"}
+            {`Timtaxa: ${formatAmount(hourlyRate)} kr`}
           </Card.Header>
           <Card.Body>
             <Form.Group>
@@ -43,7 +44,7 @@ const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
         <br />
         <Card>
           <Card.Header as="h5">
-            Debiteringsgrad: {billingRateDisplay.toString() + "%"}
+            {`Debiteringsgrad: ${billingRateDisplay}%`}
           </Card.Header>
           <Card.Body>
             <Form.Group>
@@ -68,9 +69,9 @@ const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
           </p>
           <p>
             <b>Egen intäkt att fördela: </b>
-            {formatAmount(monthlyIncome * 0.8)} kr
+            {formatAmount(monthlyIncome * ALPHADEV_SHARE)} kr
           </p>
-          <i>Baserat på månad med 167 arbetstimmar</i>
+          <i>{`Baserat på månad med ${WORK_HRS_IN_MONTH} arbetstimmar`}</i>
         </Card.Body>
       </Card>
     </div>
