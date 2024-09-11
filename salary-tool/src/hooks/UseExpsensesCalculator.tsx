@@ -59,14 +59,14 @@ const calculatePotentialSalary = (
 ): number => {
   let remainingCompensation = totalCompensation;
 
-  remainingCompensation = remainingCompensation - savings
-  
+  remainingCompensation = remainingCompensation - savings;
+
   additionalExpenses.forEach((exp) => {
     remainingCompensation = remainingCompensation - exp.cost;
   });
-  
+
   //Pension
-  remainingCompensation = remainingCompensation - (pensionContribution * 1.2426);
+  remainingCompensation = remainingCompensation - pensionContribution * 1.2426;
 
   //Vacation
   const monthlyVacationSaving = calculateMonthlVacaySaving(
@@ -74,24 +74,20 @@ const calculatePotentialSalary = (
     vacationDays
   );
 
-  const ncompensationAfterVacationSavings =
+  const compensationAfterVacationSavings =
     remainingCompensation - monthlyVacationSaving;
 
   //SocialFees on last remaining
-  return deductSocialFees(ncompensationAfterVacationSavings);
+  return deductSocialFees(compensationAfterVacationSavings);
 };
 
 const calculateMonthlVacaySaving = (
-  remainingCompensation: number,
+  avalableCompensationInMonth: number,
   amountOfDays: number
 ): number => {
-  const potentialMonthlySalary = deductSocialFees(remainingCompensation);
 
-  const extraMoneyPerVacayDay = potentialMonthlySalary * 0.0043;
-  const salaryPerDay = potentialMonthlySalary / 21;
-  const dailyVacationPay = salaryPerDay + extraMoneyPerVacayDay;
+  const dailyVacationPay = avalableCompensationInMonth / 21; //avg. of 21 work days in a month.
+  const vacationAllowanceNeeded = dailyVacationPay * amountOfDays;
 
-  const totalVacationAllowance = dailyVacationPay * amountOfDays * 1.3142;
-
-  return totalVacationAllowance / 12;
+  return vacationAllowanceNeeded / 11;
 };
