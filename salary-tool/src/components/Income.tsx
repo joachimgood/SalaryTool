@@ -1,22 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Form } from "react-bootstrap";
 import { formatAmount } from "../utils/formatter";
+import { useMonthlyIncomeCalculator } from "../hooks/UseMonthlyIncomeCalculator";
 interface IncomeProps {
-  hourlyRate: number;
-  billingRate: number;
-  monthlyIncome: number;
-  changeHourlyRate: (rate: number) => void;
-  changeBillingRate: (rate: number) => void;
+  onMonthlyIncomeChange: (income: number) => void;
 }
 
-const Income: React.FC<IncomeProps> = ({
-  hourlyRate,
-  billingRate,
-  monthlyIncome,
-  changeHourlyRate,
-  changeBillingRate,
-}) => {
+const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
+  const {
+    hourlyRate,
+    billingRate,
+    monthlyIncome,
+    setHourlyRate,
+    changeBillingRate,
+  } = useMonthlyIncomeCalculator();
+
   const billingRateDisplay = billingRate * 100;
+
+  useEffect(() => {
+    onMonthlyIncomeChange(monthlyIncome);
+  }, [monthlyIncome]);
 
   return (
     <div>
@@ -32,7 +35,7 @@ const Income: React.FC<IncomeProps> = ({
                 max={2000}
                 step={10}
                 value={hourlyRate}
-                onChange={(e) => changeHourlyRate(Number(e.target.value))}
+                onChange={(e) => setHourlyRate(Number(e.target.value))}
               />
             </Form.Group>
           </Card.Body>
@@ -57,12 +60,16 @@ const Income: React.FC<IncomeProps> = ({
       </Form>
       <br />
       <Card>
-        <Card.Header as="h5">
-          Summa
-        </Card.Header>
+        <Card.Header as="h5">Summa</Card.Header>
         <Card.Body>
-          <p><b>Fakturerat: </b>{formatAmount(monthlyIncome)} kr</p>
-          <p><b>Egen intäkt att fördela: </b>{formatAmount(monthlyIncome * 0.8)} kr</p>
+          <p>
+            <b>Fakturerat: </b>
+            {formatAmount(monthlyIncome)} kr
+          </p>
+          <p>
+            <b>Egen intäkt att fördela: </b>
+            {formatAmount(monthlyIncome * 0.8)} kr
+          </p>
           <i>Baserat på månad med 167 arbetstimmar</i>
         </Card.Body>
       </Card>

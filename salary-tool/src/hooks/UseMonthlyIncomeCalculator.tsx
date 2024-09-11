@@ -15,12 +15,6 @@ export const useMonthlyIncomeCalculator = () => {
     );
   }, [hourlyRate, billingRate]);
 
-  const changeHourlyRate = (rate: number) => {
-    if (rate < 0) {
-      rate = 0;
-    }
-    setHourlyRate(rate);
-  };
 
   const changeBillingRate = (rate: number) => {
     setBillingRate(rate / 100);
@@ -30,7 +24,7 @@ export const useMonthlyIncomeCalculator = () => {
     monthlyIncome,
     hourlyRate,
     billingRate,
-    changeHourlyRate,
+    setHourlyRate,
     changeBillingRate,
   };
 };

@@ -1,4 +1,3 @@
-import { useMonthlyIncomeCalculator } from "./hooks/UseMonthlyIncomeCalculator";
 import Income from "./components/Income";
 import { Card, Col, Container, Row, Stack } from "react-bootstrap";
 import { formatAmount } from "./utils/formatter";
@@ -6,31 +5,17 @@ import Expenses from "./components/Expenses";
 import { useState } from "react";
 
 function App() {
-  const {
-    hourlyRate,
-    billingRate,
-    monthlyIncome,
-    changeHourlyRate,
-    changeBillingRate,
-  } = useMonthlyIncomeCalculator();
-
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [potentialSalary, setPotentialSalary] = useState(0);
 
   return (
     <div className="App">
       <Container>
-        <br/>
+        <br />
         <Row>
           <h1>Alphadev löneverktyg</h1>
-          <ul>
-            <b>Todo:</b>
-            <li>Fixa local storage</li>
-            <li>branding</li>
-            <li>Sjuk/frånvarodagar?</li>
-            <li>bugg testa</li>
-          </ul>
         </Row>
-        <hr/>
+        <hr />
         <Row>
           <Col>
             <h2>Utgifter</h2>
@@ -41,13 +26,7 @@ function App() {
           </Col>
           <Col>
             <h2>Intäkter</h2>
-            <Income
-              billingRate={billingRate}
-              hourlyRate={hourlyRate}
-              monthlyIncome={monthlyIncome}
-              changeBillingRate={changeBillingRate}
-              changeHourlyRate={changeHourlyRate}
-            />
+            <Income onMonthlyIncomeChange={setMonthlyIncome} />
             <br />
             <Card>
               <Card.Header as="h4">
