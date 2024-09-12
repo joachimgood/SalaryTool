@@ -1,0 +1,17 @@
+{
+    "name": "Alphadev Salary Tool",
+    "short_name": "Salary Tool",
+    "description": "A application for calculation potential salary.",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "background_color": "#000000",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/icons/icon.png",
+            "sizes": "32x32",
+            "type": "image/png"
+          }
+    ]
+  }
