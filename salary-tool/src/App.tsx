@@ -26,7 +26,7 @@ function App() {
                 Bruttolön per månad:{" "}
                 <Badge bg="secondary" className="badge-salary">
                   {formatAmount(potentialSalary)} kr
-                </Badge>{" "}
+                </Badge>
               </Card.Header>
             </Card>
           </Col>
