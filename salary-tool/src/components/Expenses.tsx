@@ -89,7 +89,7 @@ const Expenses: React.FC<ExpensesProps> = ({
                     checked={vacationDays === 25}
                     onChange={() => setVacationDays(25)}
                     label="25 dagar"
-                    name="vacation"
+                    name="vacation25"
                   />
                 </div>
                 <div className="col">
@@ -98,7 +98,7 @@ const Expenses: React.FC<ExpensesProps> = ({
                     checked={vacationDays === 30}
                     onChange={() => setVacationDays(30)}
                     label="30 dagar"
-                    name="vacation"
+                    name="vacation30"
                   />
                 </div>
               </div>
@@ -167,7 +167,7 @@ const Expenses: React.FC<ExpensesProps> = ({
                 <InputGroup.Text> kr</InputGroup.Text>
 
                 <Button
-                  variant="outline-danger"
+                  variant="outline-light"
                   id="button-addon2"
                   onClick={() => removeExpense(expense.id)}
                 >

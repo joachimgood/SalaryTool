@@ -1,5 +1,5 @@
 import Income from "./components/Income";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Badge, Card, Col, Container, Row } from "react-bootstrap";
 import { formatAmount } from "./utils/formatter";
 import Expenses from "./components/Expenses";
 import { useState } from "react";
@@ -13,28 +13,32 @@ function App() {
       <Container>
         <br />
         <Row>
-          <h1>Alphadev löneverktyg</h1>
+          <img src="/logo.png" alt="Logo" className="alphalogo" />
         </Row>
         <hr />
         <Row>
           <Col>
-            <h2>Utgifter</h2>
+            <h3 className="background-header-alpha">Intäkter</h3>
+            <Income onMonthlyIncomeChange={setMonthlyIncome} />
+            <br />
+            <Card>
+              <Card.Header as="h4">
+                Bruttolön per månad:{" "}
+                <Badge bg="secondary" className="badge-salary">
+                  {formatAmount(potentialSalary)} kr
+                </Badge>{" "}
+              </Card.Header>
+            </Card>
+          </Col>
+          <Col>
+            <h3 className="background-header-alpha">Utgifter</h3>
             <Expenses
               monthlyIncome={monthlyIncome}
               onPotentialSalaryChange={setPotentialSalary}
             />
           </Col>
-          <Col>
-            <h2>Intäkter</h2>
-            <Income onMonthlyIncomeChange={setMonthlyIncome} />
-            <br />
-            <Card>
-              <Card.Header as="h4">
-                Bruttolön per månad: {formatAmount(potentialSalary)} kr
-              </Card.Header>
-            </Card>
-          </Col>
         </Row>
+      <br></br>
       </Container>
     </div>
   );
