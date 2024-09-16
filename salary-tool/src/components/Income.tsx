@@ -1,26 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Form } from "react-bootstrap";
 import { formatAmount } from "../utils/formatter";
-import { useMonthlyIncomeCalculator } from "../hooks/UseMonthlyIncomeCalculator";
-import { ALPHADEV_SHARE, WORK_HRS_IN_MONTH } from "../constants/constants";
+import {
+  ALPHADEV_SHARE,
+  INC_SETTINGS_STORAGE_KEY,
+  WORK_HRS_IN_MONTH,
+  WORK_HRS_IN_YEAR,
+} from "../constants/constants";
 interface IncomeProps {
-  onMonthlyIncomeChange: (income: number) => void;
+  onIncomeChange: (income: number) => void;
+  vacationDays: number;
 }
 
-const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
-  const {
-    hourlyRate,
-    billingRate,
-    monthlyIncome,
-    setHourlyRate,
-    changeBillingRate,
-  } = useMonthlyIncomeCalculator();
+const Income: React.FC<IncomeProps> = ({ onIncomeChange, vacationDays }) => {
+  const [billingRate, setBillingRate] = useState(() => {
+    const storedData = localStorage.getItem(INC_SETTINGS_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).billingRate : 1;
+  });
+
+  const [hourlyRate, setHourlyRate] = useState(() => {
+    const storedData = localStorage.getItem(INC_SETTINGS_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).hourlyRate : 1000;
+  });
+  
+  const [income, setIncome] = useState(
+    calculateIncome(hourlyRate, billingRate, vacationDays)
+  );
 
   const billingRateDisplay = billingRate * 100;
 
   useEffect(() => {
-    onMonthlyIncomeChange(monthlyIncome);
-  }, [monthlyIncome]);
+    setIncome(calculateIncome(hourlyRate, billingRate, vacationDays));
+    localStorage.setItem(
+      INC_SETTINGS_STORAGE_KEY,
+      JSON.stringify({
+        hourlyRate,
+        billingRate,
+      })
+    );
+  }, [hourlyRate, billingRate, vacationDays]);
+
+  useEffect(() => {
+    onIncomeChange(income);
+  }, [income]);
 
   return (
     <div>
@@ -53,7 +75,7 @@ const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
                 step={5}
                 max={100}
                 value={billingRateDisplay}
-                onChange={(e) => changeBillingRate(Number(e.target.value))}
+                onChange={(e) => setBillingRate(Number(e.target.value) / 100)}
               />
             </Form.Group>
           </Card.Body>
@@ -61,15 +83,15 @@ const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
       </Form>
       <br />
       <Card>
-        <Card.Header as="h5">Summa</Card.Header>
+        <Card.Header as="h5">Fakturering:</Card.Header>
         <Card.Body>
           <p>
-            <b>Fakturerat: </b>
-            {formatAmount(monthlyIncome)} kr
+            <b>Månadsfaktura till kund: </b>
+            {formatAmount(calculateMonthlyBill(hourlyRate, billingRate))} kr
           </p>
           <p>
-            <b>Egen intäkt att fördela: </b>
-            {formatAmount(monthlyIncome * ALPHADEV_SHARE)} kr
+            <b>Egen intäkt att fördela per månad: </b>
+            {formatAmount(calculateMonthlyBill(hourlyRate, billingRate) * ALPHADEV_SHARE)} kr
           </p>
           <i>{`Baserat på månad med ${WORK_HRS_IN_MONTH} arbetstimmar`}</i>
         </Card.Body>
@@ -79,3 +101,17 @@ const Income: React.FC<IncomeProps> = ({ onMonthlyIncomeChange }) => {
 };
 
 export default Income;
+
+function calculateIncome(
+  hourlyRate: number,
+  billingRate: number,
+  vacationDays: number
+): number {
+  const workHrs = WORK_HRS_IN_YEAR - vacationDays * 8;
+  const income = workHrs * hourlyRate * billingRate;
+  return income * ALPHADEV_SHARE;
+}
+
+function calculateMonthlyBill(hourlyRate: number, billingRate: number): number {
+  return WORK_HRS_IN_MONTH * hourlyRate * billingRate;
+}

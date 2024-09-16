@@ -1,123 +1,114 @@
 import { useEffect, useState } from "react";
-import {
-  ALPHADEV_SHARE,
-  EXP_STORAGE_KEY,
-  PENSION_SOCIAL_FEE,
-  SOCIAL_FEE_PERCENTAGE,
-} from "../constants/constants";
+import { EXP_STORAGE_KEY, PENSION_SOCIAL_FEE } from "../constants/constants";
 
-interface additionalExpense {
+export interface IAdditionalMonthlyExpense {
   id: string;
   name: string;
   cost: number;
 }
 
-export const useExpensesCalculator = (income: number) => {
-  const [amountToDistribute, setAmountToDistribute] = useState(
-    income * ALPHADEV_SHARE
-  );
-  const [potentialSalary, setPotentialSalary] = useState(
-    amountToDistribute * (1 - SOCIAL_FEE_PERCENTAGE)
-  );
-  const [vacationDays, setVacationDays] = useState(() => {
+export interface IEquipment {
+  id: string;
+  name: string;
+  yearlyCost: number;
+  selected: boolean;
+}
+
+export const useExpensesCalculator = () => {
+  const [expenses, setExpenses] = useState(0);
+  const [monthlyPension, setMonthlyPension] = useState(() => {
     const storedData = localStorage.getItem(EXP_STORAGE_KEY);
-    return storedData ? JSON.parse(storedData).vacationDays : 25;
+    return storedData ? JSON.parse(storedData).monthlyPension : 0;
   });
 
-  const [pension, setPension] = useState(() => {
+  const [monthlySavings, setMonthlySavings] = useState(() => {
     const storedData = localStorage.getItem(EXP_STORAGE_KEY);
-    return storedData ? JSON.parse(storedData).pension : 0;
-  });
-  const [savings, setSavings] = useState(() => {
-    const storedData = localStorage.getItem(EXP_STORAGE_KEY);
-    return storedData ? JSON.parse(storedData).savings : 0;
+    return storedData ? JSON.parse(storedData).monthlySavings : 0;
   });
 
-  const [additionalExpenses, setAdditionalExpenses] = useState<
-    additionalExpense[]
+  const [additionalMotnhlyExpenses, setAdditionalMonthlyExpense] = useState<
+    IAdditionalMonthlyExpense[]
   >(() => {
     const storedData = localStorage.getItem(EXP_STORAGE_KEY);
-    return storedData ? JSON.parse(storedData).additionalExpenses : [];
+    return storedData ? JSON.parse(storedData).additionalMotnhlyExpenses : [];
+  });
+
+  const [equipment, setEquipment] = useState<IEquipment[]>(() => {
+    const storedData = localStorage.getItem(EXP_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData).equipment : standardEquipment;
   });
 
   useEffect(() => {
-    setAmountToDistribute(income * ALPHADEV_SHARE);
-  }, [income]);
-
-  useEffect(() => {
-    setPotentialSalary(
-      calculatePotentialSalary(
-        amountToDistribute,
-        vacationDays,
-        pension,
-        additionalExpenses,
-        savings
+    setExpenses(
+      calculateYearlyExpenses(
+        monthlyPension,
+        additionalMotnhlyExpenses,
+        monthlySavings,
+        equipment
       )
     );
     localStorage.setItem(
       "expenses",
       JSON.stringify({
-        pension,
-        vacationDays,
-        additionalExpenses,
-        savings,
+        monthlyPension,
+        additionalMotnhlyExpenses,
+        monthlySavings,
+        equipment,
       })
     );
-  }, [amountToDistribute, pension, vacationDays, additionalExpenses, savings]);
+  }, [monthlyPension, additionalMotnhlyExpenses, monthlySavings, equipment]);
 
   return {
-    potentialSalary,
-    pension,
-    vacationDays,
-    additionalExpenses,
-    savings,
-    setSavings,
-    setAdditionalExpenses,
-    setVacationDays,
-    setPension,
+    expenses,
+    monthlyPension,
+    additionalMotnhlyExpenses,
+    monthlySavings,
+    equipment,
+    setMonthlySavings,
+    setAdditionalMonthlyExpense,
+    setMonthlyPension,
+    setEquipment,
   };
 };
 
-const calculatePotentialSalary = (
-  totalCompensation: number,
-  vacationDays: number,
-  pensionContribution: number,
-  additionalExpenses: additionalExpense[],
-  savings: number
-): number => {
-  let remainingCompensation = totalCompensation;
-
-  //Savings
-  remainingCompensation = remainingCompensation - savings;
-
-  //Expenses
+function calculateYearlyExpenses(
+  monthlyPension: number,
+  additionalExpenses: IAdditionalMonthlyExpense[],
+  monthlySavings: number,
+  equipment: IEquipment[]
+): number {
+  let yearlyExpenses = monthlyPension * PENSION_SOCIAL_FEE * 12;
+  yearlyExpenses = yearlyExpenses + monthlySavings * 12;
   additionalExpenses.forEach((exp) => {
-    remainingCompensation = remainingCompensation - exp.cost;
+    yearlyExpenses = yearlyExpenses + exp.cost * 12;
   });
 
-  //Pension
-  remainingCompensation =
-    remainingCompensation - pensionContribution * PENSION_SOCIAL_FEE;
+  equipment.forEach((eq) => {
+    if (eq.selected) {
+      yearlyExpenses = yearlyExpenses + eq.yearlyCost;
+    }
+  });
 
-  //Vacation
-  const monthlyVacationSaving = calculateMonthlVacaySaving(
-    remainingCompensation,
-    vacationDays
-  );
+  return yearlyExpenses;
+}
 
-  const compensationAfterVacationSavings =
-    remainingCompensation - monthlyVacationSaving;
-
-  //SocialFees on last remaining
-  return compensationAfterVacationSavings * (1 - SOCIAL_FEE_PERCENTAGE);
-};
-
-const calculateMonthlVacaySaving = (
-  avalableCompensationInMonth: number,
-  amountOfDays: number
-): number => {
-  const dailyVacationPay = avalableCompensationInMonth / 21; //avg. of 21 work days in a month.
-  const vacationAllowanceNeeded = dailyVacationPay * amountOfDays;
-
-  return vacationAllowanceNeeded / 11;
-};
+const standardEquipment = [
+  {
+    id: "phone",
+    name: "Iphone 16 Pro 512gb / Samsung Galaxy S24",
+    selected: true,
+    yearlyCost: 9000,
+  },
+  {
+    id: "dator",
+    name: "MacBook Pro",
+    selected: true,
+    yearlyCost: 12000,
+  },
+  {
+    id: "Healthcare",
+    name: "Friskvåd 5000 kr",
+    selected: true,
+    yearlyCost: 5000,
+  }
+] as IEquipment[];
