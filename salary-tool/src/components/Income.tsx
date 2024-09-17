@@ -22,15 +22,10 @@ const Income: React.FC<IncomeProps> = ({ onIncomeChange, vacationDays }) => {
     const storedData = localStorage.getItem(INC_SETTINGS_STORAGE_KEY);
     return storedData ? JSON.parse(storedData).hourlyRate : 1000;
   });
-  
-  const [income, setIncome] = useState(
-    calculateIncome(hourlyRate, billingRate, vacationDays)
-  );
-
-  const billingRateDisplay = billingRate * 100;
 
   useEffect(() => {
-    setIncome(calculateIncome(hourlyRate, billingRate, vacationDays));
+    const newIncome = calculateIncome(hourlyRate, billingRate, vacationDays);
+    onIncomeChange(newIncome);
     localStorage.setItem(
       INC_SETTINGS_STORAGE_KEY,
       JSON.stringify({
@@ -39,11 +34,8 @@ const Income: React.FC<IncomeProps> = ({ onIncomeChange, vacationDays }) => {
       })
     );
   }, [hourlyRate, billingRate, vacationDays]);
-
-  useEffect(() => {
-    onIncomeChange(income);
-  }, [income]);
-
+  
+  const billingRateDisplay = billingRate * 100;
   return (
     <div>
       <Form>
@@ -91,7 +83,10 @@ const Income: React.FC<IncomeProps> = ({ onIncomeChange, vacationDays }) => {
           </p>
           <p>
             <b>Egen intäkt att fördela per månad: </b>
-            {formatAmount(calculateMonthlyBill(hourlyRate, billingRate) * ALPHADEV_SHARE)} kr
+            {formatAmount(
+              calculateMonthlyBill(hourlyRate, billingRate) * ALPHADEV_SHARE
+            )}{" "}
+            kr
           </p>
           <i>{`Baserat på månad med ${WORK_HRS_IN_MONTH} arbetstimmar`}</i>
         </Card.Body>

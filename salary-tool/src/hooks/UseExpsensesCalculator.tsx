@@ -101,7 +101,7 @@ const standardEquipment = [
   },
   {
     id: "dator",
-    name: "MacBook Pro",
+    name: "MacBook Pro / Windows Surface Pro",
     selected: true,
     yearlyCost: 12000,
   },
