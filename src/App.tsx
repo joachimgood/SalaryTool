@@ -31,7 +31,7 @@ function App() {
       <Container>
         <br />
         <Row>
-          <img src="/logo.png" alt="Logo" className="alphalogo" />
+          <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" className="alphalogo" />
         </Row>
         <hr />
         <Row>
@@ -49,7 +49,7 @@ function App() {
             </Card>
           </Col>
           <Col>
-            <h3 className="background-header-alpha">Utgifter</h3>
+            <h3 className="background-header-alpha mobile-padding">Utgifter</h3>
             <Expenses
               vacationDays={vacationDays}
               onExpensesChange={setExpenses}

@@ -30,6 +30,16 @@ a:hover {
     border-color: #3a3a3a;    
 }
 
+input[type="checkbox"] {
+    accent-color: #da9926; /* New color when checkbox is checked */
+}
+
+/* For browsers that don’t fully support accent-color */
+input[type="checkbox"]:checked {
+    background-color: #da9926; /* Changes the background color of the checkbox */
+    border-color: #da9926;     /* Changes the border color */
+}
+
 /* Use the accent-color property (modern browsers) */
 input[type="radio"] {
     accent-color: #da9926; /* New color when radio is checked */
@@ -130,3 +140,11 @@ input[type="range"]::-ms-thumb:active {
     color: #f5f5f5; /* Light text color */
     border-top: 1px solid #555; /* Border to separate footer from card body */
 }
+
+
+
+@media (max-width: 767px) {
+    .mobile-padding {
+      padding-top: 20px; 
+    }
+  }

@@ -107,7 +107,7 @@ const standardEquipment = [
   },
   {
     id: "Healthcare",
-    name: "Friskvåd 5000 kr",
+    name: "Friskvård 5000 kr",
     selected: true,
     yearlyCost: 5000,
   }
