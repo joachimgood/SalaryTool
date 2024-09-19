@@ -36,8 +36,8 @@ input[type="checkbox"] {
 
 /* For browsers that don’t fully support accent-color */
 input[type="checkbox"]:checked {
-    background-color: #da9926; /* Changes the background color of the checkbox */
-    border-color: #da9926;     /* Changes the border color */
+    background-color: #da9926; 
+    border-color: #da9926;     
 }
 
 /* Use the accent-color property (modern browsers) */
@@ -47,16 +47,17 @@ input[type="radio"] {
 
 /* For browsers that don’t fully support accent-color */
 input[type="radio"]:checked {
-    background-color: #da9926; /* Changes the knob color */
-    border-color: #da9926;     /* Changes the border color */
+    background-color: #da9926; 
+    border-color: #da9926;     
 }
 
 .background-header-alpha {
     color: #e5e5e5
 }
-.alphalogo{
-    width: 180px;
-    height: 14px;
+
+.alphalogo {
+    width: 220px;
+    height: 18px; 
 }
 
 .badge-salary {
@@ -79,7 +80,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* For Firefox */
 input[type="range"]::-moz-range-thumb {
-    width: 20px; /* Size of the thumb */
+    width: 20px;
     height: 20px;
     background: #da9926; /* Color of the thumb */
     border-radius: 50%; /* Make it circular */
@@ -146,5 +147,6 @@ input[type="range"]::-ms-thumb:active {
 @media (max-width: 767px) {
     .mobile-padding {
       padding-top: 20px; 
+      padding-bottom: 5px; 
     }
   }

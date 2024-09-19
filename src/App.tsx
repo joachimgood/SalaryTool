@@ -36,11 +36,11 @@ function App() {
         <hr />
         <Row>
           <Col>
-            <h3 className="background-header-alpha">Intäkter</h3>
+            <h3 className="background-header-alpha mobile-padding">Intäkter</h3>
             <Income onIncomeChange={setIncome} vacationDays={vacationDays} />
             <br />
             <Card>
-              <Card.Header as="h4">
+              <Card.Header as="h5">
                 Bruttolön per månad:{" "}
                 <Badge bg="secondary" className="badge-salary">
                   {formatAmount(potentialSalary)} kr
