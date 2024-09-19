@@ -95,13 +95,13 @@ function calculateYearlyExpenses(
 const standardEquipment = [
   {
     id: "phone",
-    name: "Iphone 16 Pro 512gb / Samsung Galaxy S24",
+    name: "Iphone 16 Pro / Samsung Galaxy S24",
     selected: true,
     yearlyCost: 9000,
   },
   {
     id: "dator",
-    name: "MacBook Pro / Windows Surface Pro",
+    name: "MacBook Pro 14 / Surface Laptop 7",
     selected: true,
     yearlyCost: 12000,
   },
