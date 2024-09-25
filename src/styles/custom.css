@@ -1,152 +1,203 @@
-
 /* General text color */
 body {
-    background-color: #2e2e2e; /* Dark background color */
-    color: #d0d0d0; /* Light gray text color */
+    background-color: #2e2e2e;
+    color: #d0d0d0;
 }
 
 /* Heading colors */
 h1, h2, h3, h4, h5, h6 {
-    color: #A0A0A0; /* Light gray for headings */
+    color: #A0A0A0;
 }
 
 /* Links color */
 a {
-    color: #A0A0A0; /* Light gray for links */
+    color: #A0A0A0;
 }
 
 a:hover {
-    color: #A0A0A0; /* Slightly darker gray on hover */
+    color: #A0A0A0;
 }
 
 .btn-primary {
-    background-color: #da9926; 
+    background-color: #da9926;
     border-color: #3a3a3a;
-
 }
 
 .btn-primary:hover {
-    background-color: #3a3a3a;  
-    border-color: #3a3a3a;    
+    background-color: #3a3a3a;
+    border-color: #3a3a3a;
 }
 
 input[type="checkbox"] {
-    accent-color: #da9926; /* New color when checkbox is checked */
+    accent-color: #da9926;
 }
 
-/* For browsers that don’t fully support accent-color */
 input[type="checkbox"]:checked {
-    background-color: #da9926; 
-    border-color: #da9926;     
+    background-color: #da9926;
+    border-color: #da9926;
 }
 
-/* Use the accent-color property (modern browsers) */
 input[type="radio"] {
-    accent-color: #da9926; /* New color when radio is checked */
+    accent-color: #da9926;
 }
 
-/* For browsers that don’t fully support accent-color */
 input[type="radio"]:checked {
-    background-color: #da9926; 
-    border-color: #da9926;     
+    background-color: #da9926;
+    border-color: #da9926;
 }
 
 .background-header-alpha {
-    color: #e5e5e5
+    color: #e5e5e5;
 }
 
 .alphalogo {
     width: 220px;
-    height: 18px; 
+    height: 18px;
 }
 
 .badge-salary {
-    background-color: #da9926 !important; 
-    border-color: #da9926;    
+    background-color: #da9926 !important;
+    border-color: #da9926;
 }
 
-/* RANGE PICKER BELOW */
-
-/* For WebKit browsers (Chrome, Safari, Opera) */
+/* Range Picker */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px; /* Size of the thumb */
+    width: 20px;
     height: 20px;
-    background: #da9926; /* Color of the thumb */
-    border-radius: 50%; /* Make it circular */
+    background: #da9926;
+    border-radius: 50%;
     cursor: pointer;
 }
 
-/* For Firefox */
 input[type="range"]::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #da9926; /* Color of the thumb */
-    border-radius: 50%; /* Make it circular */
+    background: #da9926;
+    border-radius: 50%;
     cursor: pointer;
 }
 
-/* For Internet Explorer and Edge */
 input[type="range"]::-ms-thumb {
-    width: 20px; /* Size of the thumb */
+    width: 20px;
     height: 20px;
-    background: #da9926; /* Color of the thumb */
-    border-radius: 50%; /* Make it circular */
+    background: #da9926;
+    border-radius: 50%;
     cursor: pointer;
 }
 
-/* Change knob color when clicked (active) for WebKit browsers */
 input[type="range"]::-webkit-slider-thumb:active {
-    background-color: #3a3a3a; /* Color when clicked */
+    background-color: #3a3a3a;
 }
 
-/* Change knob color when clicked for Firefox */
 input[type="range"]::-moz-range-thumb:active {
-    background-color: #3a3a3a; /* Color when clicked */
+    background-color: #3a3a3a;
 }
 
-/* Change knob color when clicked for IE/Edge */
 input[type="range"]::-ms-thumb:active {
-    background-color: #3a3a3a; /* Color when clicked */
+    background-color: #3a3a3a;
 }
-
 
 /* Styling Bootstrap cards */
 .card {
-    background-color: #333; /* Darker background for card */
-    color: #f5f5f5; /* Light text color for contrast */
-    border: 1px solid #444; /* Slightly lighter border to match the card background */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+    background-color: #333;
+    color: #f5f5f5;
+    border: 1px solid #444;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover effect for cards */
 .card:hover {
-    transform: translateY(-5px); /* Lift the card slightly */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Styling card headers */
 .card-header {
-    background-color: #444; /* Slightly lighter background for header */
-    color: #f5f5f5; /* Light text color */
-    border-bottom: 1px solid #555; /* Border to separate header from card body */
+    background-color: #444;
+    color: #f5f5f5;
+    border-bottom: 1px solid #555;
 }
 
 /* Styling card footers */
 .card-footer {
-    background-color: #444; /* Same as header */
-    color: #f5f5f5; /* Light text color */
-    border-top: 1px solid #555; /* Border to separate footer from card body */
+    background-color: #444;
+    color: #f5f5f5;
+    border-top: 1px solid #555;
 }
 
-
-
+/* Mobile padding adjustments */
 @media (max-width: 767px) {
     .mobile-padding {
-      padding-top: 20px; 
-      padding-bottom: 5px; 
+      padding-top: 20px;
+      padding-bottom: 5px;
     }
-  }
+}
+
+/* Styling the Input Group to match the dark theme */
+.input-group {
+    background-color: #333;
+    color: #f5f5f5;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 0.25rem;
+}
+
+.input-group-text {
+    background-color: #444;
+    color: #d0d0d0;
+    border: 1px solid #555;
+}
+
+/* Form control styling */
+.form-control {
+    background-color: #2e2e2e;
+    color: #d0d0d0;
+    border: 1px solid #555;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: #a0a0a0;
+}
+
+.form-control:focus {
+    background-color: #444;
+    color: #ffffff;
+    border-color: #da9926;
+    box-shadow: none;
+}
+
+/* Styling the Button */
+.btn-outline-light {
+    background-color: #444;
+    color: #da9926;
+    border-color: #555;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: #da9926;
+    color: #2e2e2e;
+    border-color: #da9926;
+}
+
+.bi-trash {
+    color: #da9926;
+}
+
+/* Mobile adjustments for input groups */
+@media (max-width: 767px) {
+    .input-group {
+        flex-direction: column;
+    }
+
+    .input-group-text,
+    .form-control,
+    .btn-outline-light {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
