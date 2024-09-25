@@ -42,15 +42,13 @@ const AdditionalMonthlyExpenses: React.FC<AdditionalMonthlyExpensesProps> = ({
         <>
           {additionalMonthlyExpenses.map((expense, index) => (
             <InputGroup key={index} className="mb-3">
-              <InputGroup.Text>Namn:</InputGroup.Text>
               <Form.Control
-                placeholder={index === 0 ? "t.ex. telefonabonnemang" : ""}
+                placeholder={index === 0 ? "Namn (t.ex. telefonabonnemang)" : ""}
                 value={expense.name}
                 onChange={(e) =>
                   editExpense(expense.id, e.target.value, expense.cost)
                 }
               />
-              <InputGroup.Text>Pris:</InputGroup.Text>
               <Form.Control
                 min={0}
                 max={20000}
@@ -75,7 +73,7 @@ const AdditionalMonthlyExpenses: React.FC<AdditionalMonthlyExpensesProps> = ({
         </>
       )}
       <div className="d-grid gap-2">
-        <Button onClick={() => addExpense()} variant="primary">
+        <Button onClick={() => addExpense()} variant="secondary">
           Lägg till utgift
         </Button>
       </div>
