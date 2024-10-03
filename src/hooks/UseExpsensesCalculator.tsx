@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EXP_STORAGE_KEY, PENSION_SOCIAL_FEE } from "../constants/constants";
+import { EXP_STORAGE_KEY, PENSION_SOCIAL_FACTOR } from "../constants/constants";
 
 export interface IAdditionalMonthlyExpense {
   id: string;
@@ -77,7 +77,7 @@ function calculateYearlyExpenses(
   monthlySavings: number,
   equipment: IEquipment[]
 ): number {
-  let yearlyExpenses = monthlyPension * PENSION_SOCIAL_FEE * 12;
+  let yearlyExpenses = monthlyPension * PENSION_SOCIAL_FACTOR * 12;
   yearlyExpenses = yearlyExpenses + monthlySavings * 12;
   additionalExpenses.forEach((exp) => {
     yearlyExpenses = yearlyExpenses + exp.cost * 12;
@@ -95,13 +95,13 @@ function calculateYearlyExpenses(
 const standardEquipment = [
   {
     id: "phone",
-    name: "Iphone 16 Pro / Samsung Galaxy S24",
+    name: "Ny telefon vartannat år, t.ex. Iphone 16 Pro",
     selected: true,
     yearlyCost: 9000,
   },
   {
     id: "dator",
-    name: "MacBook Pro 14 / Surface Laptop 7",
+    name: "Ny laptop vartannat år, t.ex. MacBook Pro 14",
     selected: true,
     yearlyCost: 12000,
   },
