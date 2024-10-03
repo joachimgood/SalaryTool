@@ -3,9 +3,7 @@ import { Badge, Card, Col, Container, Row } from "react-bootstrap";
 import { formatAmount } from "./utils/formatter";
 import Expenses from "./components/Expenses";
 import { useEffect, useState } from "react";
-import {
-  SOCIAL_FEE_PERCENTAGE,
-} from "./constants/constants";
+import { SOCIAL_FEE_PERCENTAGE } from "./constants/constants";
 
 function App() {
   const [income, setIncome] = useState(0);
@@ -24,14 +22,20 @@ function App() {
     );
   }, [vacationDays]);
 
-  const potentialSalary = calculatePotentialSalaryInMonth(income, expenses);
+  const afterExpesnes = income - expenses;
+  const availableMonthlyAmount = afterExpesnes / 12;
+  const potentialSalary = calculatePotentialSalaryInMonth(availableMonthlyAmount);
 
   return (
     <div className="App">
       <Container>
         <br />
         <Row>
-          <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" className="alphalogo" />
+          <img
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="Logo"
+            className="alphalogo"
+          />
         </Row>
         <hr />
         <Row>
@@ -45,6 +49,13 @@ function App() {
                 <Badge bg="secondary" className="badge-salary">
                   {formatAmount(potentialSalary)} kr
                 </Badge>{" "}
+                <br></br>
+                {/* income: {formatAmount(income)}
+                <br></br>
+                expenses: {formatAmount(expenses)}
+                <br></br>
+                to spend on salary each month: {(income - expenses) / 12}
+                <br></br> */}
               </Card.Header>
             </Card>
           </Col>
@@ -66,12 +77,13 @@ function App() {
 export default App;
 
 const calculatePotentialSalaryInMonth = (
-  yearlyCompensation: number,
-  expenses: number
+  availableMonthlyAmount: number
 ): number => {
-  //Expenses
-  const compensationRemaining = yearlyCompensation - expenses;
 
-  //SocialFees on last remaining
-  return (compensationRemaining * (1 - SOCIAL_FEE_PERCENTAGE)) / 12;
+  const factor = 1 + SOCIAL_FEE_PERCENTAGE / 100;
+
+  // Dividera totalbeloppet med den faktorn för att få bruttolönen
+  const grossSalary = availableMonthlyAmount / factor;
+
+  return grossSalary;
 };
